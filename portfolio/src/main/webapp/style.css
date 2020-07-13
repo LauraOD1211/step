@@ -4,6 +4,11 @@
   width: 650px;
 }
 
-#greeting-container {
+#fact-container {
   margin-top: 20px;
+}
+
+.links {
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
