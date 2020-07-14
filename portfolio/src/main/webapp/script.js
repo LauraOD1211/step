@@ -15,33 +15,32 @@
 /**
  * Adds a random fact to the page.
  */
-function addRandomFact() {
+function addRandomFact () {
   const facts =
-    ['I am from Donegal in Ireland', 
-    'I can speak English, Irish, French and a little Swedish', 
-    'I love archery, and I am a member of my college\'s archery club', 
-    'My favourite video game is The Legend of Zelda: Breath of the Wild',
-    'My favourite TV show is Erased',
-    'I have two sisters, one older and one younger'
-    ];
+    ['I am from Donegal in Ireland',
+      'I can speak English, Irish, French and a little Swedish',
+      'I love archery, and I am a member of my college\'s archery club',
+      'My favourite video game is The Legend of Zelda: Breath of the Wild',
+      'My favourite TV show is Erased',
+      'I have two sisters, one older and one younger'
+    ]
 
   // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
+  const fact = facts[Math.floor(Math.random() * facts.length)]
 
   // Add it to the page.
-  const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+  const factContainer = document.getElementById('fact-container')
+  factContainer.innerText = fact
 }
 
 /**
  * Displays text when clicked on.
  */
-function showText(id) {
-  const text=document.getElementById(id);
-  if(text.classList.contains("hide")){
-    text.classList.replace("hide", "show");
-  }
-  else{
-    text.classList.replace("show", "hide");
+function showText (id) {
+  const text = document.getElementById(id);
+  if (text.classList.contains('hide')) {
+    text.classList.replace('hide', 'show')
+  } else {
+    text.classList.replace('show', 'hide')
   }
 }
