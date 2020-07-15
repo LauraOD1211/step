@@ -1,29 +1,75 @@
+body {
+  background-color: #F4F4F9;
+  color: #000000;
+  font-family: 'Poppins', sans-serif;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
-  width: 650px;
+  width: 55%;
 }
 
 #fact-container {
   margin-top: 20px;
 }
 
-.links {
+#links {
   display: grid;
   grid-template-columns: 50% 50%;
+  background-color: #B8DBD9;
 }
 
-.favegrid {
+.section {
+  margin: 2.5%;
+  background-color: #F4F4F9;
+}
+
+#favegrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+#favegrid::before {
+  content: '';
+  width: 0;
+  padding-bottom: 100%;
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+#favegrid > *:first-child {
+  grid-row: 1 / 1;
+  grid-column: 1 / 1;
+}
+
+.favediv {
+  border: 1px #F4F4F9 solid;
+  width: 100%; 
+  height: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hide {
+  background-color:#586F7C;
+  color: #F4F4F9;
+  font-size: 250%;
+}
+
+.hide p {
     display: none;
 }
 
 .show {
-    color: green;
+  background-color:#B8DBD9;
+  color: #2F4550;
+}
+
+.show h3 {
+    display: none;
 }

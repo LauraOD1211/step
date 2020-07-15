@@ -34,13 +34,21 @@ function addRandomFact () {
 }
 
 /**
- * Displays text when clicked on.
+ * Displays text when hovered over.
  */
-function toggleText (id) {
+function showText (id) {
   const text = document.getElementById(id);
   if (text.classList.contains('hide')) {
     text.classList.replace('hide', 'show');
-  } else {
+  }
+}
+
+/**
+ * Hides text when not hovered over.
+ */
+function hideText (id) {
+  const text = document.getElementById(id);
+  if (text.classList.contains('show')) {
     text.classList.replace('show', 'hide');
   }
 }

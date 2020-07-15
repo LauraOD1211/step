@@ -5,8 +5,9 @@
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body>    
     <div id="content">
       <h1>My Portfolio</h1>
       <img src="images/20190828_151405.jpg" width="50%"/>
@@ -14,7 +15,10 @@
           I am studying Computer Science & Information Technology at NUI Galway in Ireland.
           On this page you can find links to my GitHub and LinkedIn,
           as well as some of my past projects. </p>
-      <div class="links">
+      <p>Click here to get a random fact about me:</p>
+      <button onclick="addRandomFact()">Click here!</button>
+      <div id="fact-container"></div>
+      <div id="links">
         <div class="section" id="linkedin">
             <h1>LinkedIn</h1>
             <a href="https://linkedin.com/in/laura-odonnell/"><img src="images/linkedin.png" width="50%" height="50%"></a>
@@ -27,7 +31,7 @@
                 this website!</p>
         </div>
         <div class="section" id="lovemu">
-            <h1>LoveMu</h1>
+            <h1>Loveμ</h1>
             <a href="https://lovemu.compsoc.ie"><img src="images/logo-purple.png" width="50%" height="50%"></a>
             <p>This is a website I made in my second year software development course. It's a dating site
                  where users are matched to each other based on their music preferences! </p>
@@ -39,16 +43,13 @@
                 a blog where I talk about a whole pile of things, as well as showcase my projects and Swedish notes.</p>
         </div>
       </div>
-      <p>Click here to get a random fact about me:</p>
-      <button onclick="addRandomFact()">Click here!</button>
-      <div id="fact-container"></div>
-      <div class="favourites">
+      <div id="favourites">
         <h1>My favourites!</h1>
         <p>Here is a collection of my favourite things! Click to learn more:</p>
-        <div class="favegrid">
-            <div>
-                <h3 onclick="toggleText('food')">Food</h3>
-                <p class="fave hide" id='food'>
+        <div id="favegrid">
+            <div id='food' class="favediv hide" onmouseover="showText('food')" onmouseout="hideText('food')">
+                <h3>Food</h3>
+                <p>
                     Honestly, there are too many delicious things out there for me to decide on 
                     just one, but I will say that the massaman curry from my favourite local 
                     restaurant is one of the nicest things I have ever had. I'm also a huge fan 
@@ -56,9 +57,9 @@
                     Italian food is also amazing.
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('sport')">Sport</h3>
-                <p class="fave hide" id='sport'>
+            <div id='sport' class="favediv hide" onmouseover="showText('sport')" onmouseout="hideText('sport')">
+                <h3>Sport</h3>
+                <p>
                     Without a doubt, my absolute favourite sport is archery. I joined my 
                     college's archery club when I started in first year, and it didn't take 
                     long for me to fall in love with it. I have my own bow and arrows now,
@@ -66,9 +67,9 @@
                     and darts, but more as a spectator than a player.
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('music')">Music</h3>
-                <p class="fave hide" id='music'>
+            <div id='music' class="favediv hide" onmouseover="showText('music')" onmouseout="hideText('music')">
+                <h3>Music</h3>
+                <p>
                     I listen to a lot of different genres, so it is really difficult for me to 
                     pick just one! My favourite artist is probably Hozier, he has an amazing 
                     voice and his lyrics are so poetic. I also like emo/pop-punk music (think 
@@ -76,9 +77,9 @@
                     half.alive and IDKHOW), and comedy music (NSP and Danny Gonzales). 
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('movie')">Movie</h3>
-                <p class="fave hide" id='movie'>
+            <div id='movie' class="favediv hide" onmouseover="showText('movie')" onmouseout="hideText('movie')">
+                <h3>Movie</h3>
+                <p>
                     To tell the truth, I don't watch very many movies, but if I had to pick one it 
                     would be the 2000 film Snatch, directed by Guy Richie. The film is incredibly 
                     funny, and the way all of the seperate story lines cross and link together is 
@@ -86,9 +87,9 @@
                     it would be unfair to leave them off this list.
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('tv')">TV series</h3>
-                <p class="fave hide" id='tv'>
+            <div id='tv' class="favediv hide" onmouseover="showText('tv')" onmouseout="hideText('tv')">
+                <h3>TV series</h3>
+                <p>
                     Much like movies, I do not watch that much TV, but I do have a few favourites. 
                     Avatar: The Last Airbender and it's sequel Legend of Korra are amazing shows 
                     that I watched as a child and still love now. I also enjoyed the anime Full 
@@ -96,9 +97,9 @@
                     and BNA, and I really recommend them.
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('vgame')">Video Game</h3>
-                <p class="fave hide" id='vgame'>
+            <div id='vgame' class="favediv hide" onmouseover="showText('vgame')" onmouseout="hideText('vgame')">
+                <h3>Video Game</h3>
+                <p>
                     I really enjoy video games, Nintendo games in particular. My favourite series 
                     is the Legend of Zelda, and my favourite Zelda game is Breath of the Wild. 
                     The storyline is super intricate, and the graphics are absolutely beautiful. 
@@ -106,9 +107,9 @@
                     Creed games, though there are not many available for the Nintendo Switch.
                 </p>
             </div>
-            <div>
-                <h3 onclick="toggleText('pastime')">Pastime</h3>
-                <p class="fave hide" id='pastime'>
+            <div id='pastime' class="favediv hide" onmouseover="showText('pastime')" onmouseout="hideText('pastime')">
+                <h3>Pastime</h3>
+                <p>
                     One of my favourite things to do is play boardgames. During the college semester, 
                     my friends and I meet weekly to play together. I love all kinds of boardgames, 
                     from the classics like Monopoly and Cluedo, to more obscure games like Betrayal at 
