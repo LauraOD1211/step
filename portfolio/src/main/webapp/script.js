@@ -23,24 +23,24 @@ function addRandomFact () {
       'My favourite video game is The Legend of Zelda: Breath of the Wild',
       'My favourite TV show is Erased',
       'I have two sisters, one older and one younger'
-    ]
+    ];
 
   // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)]
+  const fact = facts[Math.floor(Math.random() * facts.length)];
 
   // Add it to the page.
-  const factContainer = document.getElementById('fact-container')
-  factContainer.innerText = fact
+  const factContainer = document.getElementById('fact-container');
+  factContainer.innerText = fact;
 }
 
 /**
  * Displays text when clicked on.
  */
-function showText (id) {
+function toggleText (id) {
   const text = document.getElementById(id);
   if (text.classList.contains('hide')) {
-    text.classList.replace('hide', 'show')
+    text.classList.replace('hide', 'show');
   } else {
-    text.classList.replace('show', 'hide')
+    text.classList.replace('show', 'hide');
   }
 }
