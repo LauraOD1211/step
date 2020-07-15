@@ -1,6 +1,6 @@
 body {
-  background-color: #F4F4F9;
-  color: #000000;
+  background-color: #f4f4f9;
+  color: #000;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -16,8 +16,8 @@ body {
 }
 
 #me {
-    width: 95%;
-    justify-self: stretch;
+  width: 95%;
+  justify-self: stretch;
 }
 
 #fact-container {
@@ -28,12 +28,12 @@ body {
   margin-top: 20px;
   display: grid;
   grid-template-columns: 50% 50%;
-  background-color: #B8DBD9;
+  background-color: #b8dbd9;
 }
 
 .section {
   margin: 2.5%;
-  background-color: #F4F4F9;
+  background-color: #f4f4f9;
 }
 
 #favegrid {
@@ -58,29 +58,29 @@ body {
 }
 
 .favediv {
-  border: 1px #F4F4F9 solid;
-  width: 100%; 
-  height: 100%; 
+  border: 1px #f4f4f9 solid;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .hide {
-  background-color:#586F7C;
-  color: #F4F4F9;
+  background-color: #586f7c;
+  color: #f4f4f9;
   font-size: 220%;
 }
 
 .hide p {
-    display: none;
+  display: none;
 }
 
 .show {
-  background-color:#B8DBD9;
-  color: #2F4550;
+  background-color:#b8dbd9;
+  color: #2f4550;
 }
 
 .show h3 {
-    display: none;
+  display: none;
 }
