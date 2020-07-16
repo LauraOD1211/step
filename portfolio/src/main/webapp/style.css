@@ -10,6 +10,10 @@ body {
   width: 52%;
 }
 
+h1 {
+  text-align: center;
+}
+
 #about-me {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -22,6 +26,23 @@ h1 {
 #me {
   width: 95%;
   justify-self: stretch;
+}
+
+#about-me h2 {
+  margin: 1%;
+}
+
+#about-me button {
+  color: #2f4550;
+  background-color: #b8dbd9;
+  border-color: #b8dbd9;
+  border-style: solid;
+  padding: 1%;
+  text-align: center;
+  margin: auto;
+  width: 30%;
+  font-size: 18px;
+  display: block;
 }
 
 #fact-container {
@@ -105,4 +126,63 @@ a:hover {
 
 .show h3 {
   display: none;
+}
+
+#comment-section {
+  display: grid;
+  grid-template-columns: 100%;
+  justify-items: center;
+  align-items: center;
+  background-color: #b8dbd9;
+  border-radius: 2em;
+  padding: 1em;
+}
+
+#comment-section.empty {
+  display: none;
+}
+
+.comment {
+  background-color: #f4f4f9;
+  width: 95%;
+  margin: auto;
+  margin-bottom: 1%;
+  padding: 2.5%;
+}
+
+.comment:first-child {
+  border-top-left-radius: 2em;
+  border-top-right-radius: 2em;
+}
+
+.comment:last-child {
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
+}
+
+#comment-box {
+  background-color: #586f7c;
+  margin: 2px;
+  padding: 2.5%;
+  color: #f4f4f9;
+  border-radius: 2em;
+}
+
+#comment-box textarea {
+  margin: auto;
+  width: 100%;
+  height: 3em;
+}
+
+#comment-box button {
+  color: #2f4550;
+  background-color: #b8dbd9;
+  border-color: #b8dbd9;
+  border-style: solid;
+  padding: 1%;
+  text-align: center;
+  margin: auto;
+  width: 30%;
+  font-size: 18px;
+  display: block;
 }

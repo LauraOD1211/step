@@ -21,9 +21,10 @@
             everything you need to know about me, and will also showcase some 
             of my other projects. 
           </p>
-          <p>Click here to get a random fact about me:</p>
-          <button onclick="addRandomFact()">Click here!</button>
+          
+          <button onclick="addRandomFact()">Random fact!</button>
           <div id="fact-container"></div>
+          
         </div>
       </div>
       <h2>Projects & Links</h2>
@@ -168,6 +169,22 @@
                     also cute, but I'm unfortunately allergic to fur.
                 </p>
             </div>
+        </div>
+      </div>
+      <div id='comments'>
+        <h2>Comments</h2>
+        <p>
+          If you like this page, or have any suggestions on how to improve, 
+          please leave a comment!
+        </p>
+        <div id='comment-section' class="empty">
+        </div>
+        <div id='comment-box'>
+          <label for="name">Name (optional):</label><br>
+          <input type="text" id="name" name="name"><br>
+          <label for="commenttext">Comment:</label><br>
+          <textarea id='commenttext'></textarea><br>
+          <button onclick='addComment()'>Submit</button>
         </div>
       </div>
     </div>

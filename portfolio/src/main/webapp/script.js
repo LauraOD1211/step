@@ -15,6 +15,9 @@
 /**
  * Adds a random fact to the page.
  */
+
+const commentArray = [];
+
 function addRandomFact () {
   const facts =
     ['I am from Donegal in Ireland',
@@ -55,4 +58,37 @@ function hideText (id) {
   if (text.classList.contains('show')) {
     text.classList.replace('show', 'hide');
   }
+}
+
+/**
+ * Adds comment to JSON document
+ */
+function addComment () {
+  var name = document.getElementById('name').value;
+  const body = document.getElementById('commenttext').value;
+  const date = Date.now();
+  if (name === '') {
+    name = 'Anonymous';
+  }
+  if (body !== '') {
+    var comment = { 'name': name, 'comment': body, 'posted': date };
+    commentArray.push(comment);
+  }
+  document.getElementById('commenttext').value = '';
+  displayComments();
+}
+
+/**
+ * Displays all comments
+ */
+function displayComments () {
+  var out = '';
+  for (var i = 0; i < commentArray.length; i++) {
+    out += '<div class=\'comment\'><h3>' + commentArray[i].name +
+    '</h3><p>' + commentArray[i].comment + '</p></div>';
+  }
+  if (document.getElementById('comment-section').classList.contains('empty')) {
+    document.getElementById('comment-section').classList.remove('empty');
+  }
+  document.getElementById('comment-section').innerHTML = out;
 }
