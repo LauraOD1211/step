@@ -16,7 +16,7 @@ body {
 }
 
 h1 {
-    text-align:  center;
+  text-align: center;
 }
 
 #me {
@@ -44,17 +44,16 @@ h1 {
   padding: 2%;
   justify-self: stretch;
 }
+
 a:link {
   color: #000;
   text-decoration: none;
 }
 
-/* visited link */
 a:visited {
   color: #000;
 }
 
-/* mouse over link */
 a:hover {
   color: #586f7c;
 }
@@ -100,7 +99,7 @@ a:hover {
 }
 
 .show {
-  background-color:#b8dbd9;
+  background-color: #b8dbd9;
   color: #2f4550;
 }
 
