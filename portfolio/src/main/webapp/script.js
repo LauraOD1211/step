@@ -20,9 +20,13 @@ function addRandomFact () {
     ['I am from Donegal in Ireland',
       'I can speak English, Irish, French and a little Swedish',
       'I love archery, and I am a member of my college\'s archery club',
-      'My favourite video game is The Legend of Zelda: Breath of the Wild',
-      'My favourite TV show is Erased',
-      'I have two sisters, one older and one younger'
+      'I am a system admin for my college\'s computer society',
+      'I have two sisters, one older and one younger',
+      'I grew up on a farm, with cows and sheep',
+      'I am teaching myself Swedish in my free time',
+      'I am a Scorpio, born in the year of the rabbit',
+      'I am terrible at coming up with facts',
+      'My name comes from Latin, and means "victory"'
     ];
 
   // Pick a random fact.
