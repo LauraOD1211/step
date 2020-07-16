@@ -84,8 +84,8 @@ function addComment () {
 function displayComments () {
   var out = '';
   for (var i = 0; i < commentArray.length; i++) {
-      out += '<div class=\'comment\'><h3>' + commentArray[i].name + '</h3><p>' 
-      + commentArray[i].comment + '</p></div>';
+    out += '<div class=\'comment\'><h3>' + commentArray[i].name +
+    '</h3><p>' + commentArray[i].comment + '</p></div>';
   }
   if (document.getElementById('comment-section').classList.contains('empty')) {
     document.getElementById('comment-section').classList.remove('empty');
