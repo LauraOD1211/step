@@ -67,14 +67,14 @@ function addComment () {
   var name = document.getElementById('name').value;
   const body = document.getElementById('commenttext').value;
   const date = Date.now();
-  if(name == ""){
-    name = "Anonymous";
+  if (name === '') {
+    name = 'Anonymous';
   }
-  if(body != ""){
-    var comment = {"name": name, "comment": body, "posted": date};
+  if (body !== '') {
+    var comment = { 'name': name, 'comment': body, 'posted': date };
     commentArray.push(comment);
   }
-  document.getElementById('commenttext').value = "";
+  document.getElementById('commenttext').value = '';
   displayComments();
 }
 
@@ -82,9 +82,13 @@ function addComment () {
  * Displays all comments
  */
 function displayComments () {
-  var out = "";
-  for (i=0; i<commentArray.length; i++) {
-      out += "<div class='comment'><h3>"+commentArray[i].name+"</h3><p>"+commentArray[i].comment+"</p></div>";
+  var out = '';
+  for (var i = 0; i < commentArray.length; i++) {
+      out += '<div class=\'comment\'><h3>' + commentArray[i].name + '</h3><p>' 
+      + commentArray[i].comment + '</p></div>';
+  }
+  if (document.getElementById('comment-section').classList.contains('empty')) {
+    document.getElementById('comment-section').classList.remove('empty');
   }
   document.getElementById('comment-section').innerHTML = out;
 }
