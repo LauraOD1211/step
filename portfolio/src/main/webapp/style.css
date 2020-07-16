@@ -15,6 +15,10 @@ body {
   grid-template-columns: 50% 50%;
 }
 
+h1 {
+  text-align: center;
+}
+
 #me {
   width: 95%;
   justify-self: stretch;
@@ -29,11 +33,29 @@ body {
   display: grid;
   grid-template-columns: 50% 50%;
   background-color: #b8dbd9;
+  border-radius: 5%;
 }
 
 .section {
-  margin: 2.5%;
+  margin: 4%;
   background-color: #f4f4f9;
+  text-align: center;
+  border-radius: 5%;
+  padding: 2%;
+  justify-self: stretch;
+}
+
+a:link {
+  color: #000;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #000;
+}
+
+a:hover {
+  color: #586f7c;
 }
 
 #favegrid {
@@ -77,7 +99,7 @@ body {
 }
 
 .show {
-  background-color:#b8dbd9;
+  background-color: #b8dbd9;
   color: #2f4550;
 }
 
