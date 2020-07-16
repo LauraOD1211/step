@@ -19,6 +19,10 @@ h1 {
   grid-template-columns: 50% 50%;
 }
 
+h1 {
+  text-align: center;
+}
+
 #me {
   width: 95%;
   justify-self: stretch;
