@@ -118,6 +118,7 @@ a:hover {
 .show {
   background-color: #b8dbd9;
   color: #2f4550;
+  text-align: center;
 }
 
 .show h3 {
