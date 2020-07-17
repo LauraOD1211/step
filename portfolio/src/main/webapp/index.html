@@ -2,17 +2,191 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Laura's Site</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body>    
     <div id="content">
       <h1>My Portfolio</h1>
-      <p>This is my portfolio.</p>
-      <p>Click here to get a random message:</p>
-      <button onclick="addRandomGreeting()">Hello</button>
-      <div id="greeting-container"></div>
+      <div id="about-me">
+        <img id="me" src="images/20190828_151405.jpg"/>
+        <div>
+          <h2>About Me</h2>
+          <p>
+            Hi! My name is Laura. I am a 20 year old college student and STEP 
+            Intern with Google. I am studying Computer Science & Information 
+            Technology at NUI Galway in Ireland. This page will tell you 
+            everything you need to know about me, and will also showcase some 
+            of my other projects. 
+          </p>
+          
+          <button onclick="addRandomFact()">Random fact!</button>
+          <div id="fact-container"></div>
+          
+        </div>
+      </div>
+      <h2>Projects & Links</h2>
+      <div id="links">
+        <div class="section" id="lovemu">
+          <a href="https://lovemu.compsoc.ie">
+            <h1>Loveμ</h1>
+            <img src="images/logo-purple.png" width="50%" height="50%">
+          </a>
+          <p>
+            This is a website I made in my second year software development 
+            course. It's a dating site where users are matched to each other 
+            based on their music preferences! 
+          </p>
+        </div>
+        <div class="section" id="lauradoes">
+          <a href="https://lauradoesthings.com">
+            <h1>LauraDoesThings</h1>
+            <img src="https://jooinn.com/images/under-construction-1.jpg" width="50%" height="45%">
+          </a>
+          <p>
+            This is a personal project, currently on hold so I can focus on my 
+            internship. It is going to be a blog where I talk about a whole 
+            pile of things, as well as showcase my projects.
+          </p>
+        </div>
+        <div class="section" id="github">
+          <a href="https://github.com/LauraOD1211">
+            <h1>Github</h1>
+            <img src="images/github.png" width="50%" height="50%">
+          </a>
+          <p>
+            Here you can find a collection of my past projects, including my 
+            collegework, side projects and even this website!
+          </p>
+        </div>
+        <div class="section" id="linkedin">
+          <a href="https://linkedin.com/in/laura-odonnell/">
+            <h1>LinkedIn</h1>
+            <img src="images/linkedin.png" width="50%" height="50%">
+          </a>
+          <p>
+            Check out my LinkedIn to see my past employment and education, my 
+            skills and my achievements.
+          </p>
+        </div>
+      </div>
+      <div id="favourites">
+        <h2>My favourites!</h2>
+        <p>Here is a collection of my favourite things! Hover over each to learn more:</p>
+        <div id="favegrid">
+            <div id='food' class="favediv hide" onmouseover="showText('food')" onmouseout="hideText('food')">
+                <h3>Food</h3>
+                <p>
+                    There are too many delicious things out there for me to 
+                    decide on just one, but the massaman curry from my 
+                    favourite restaurant is definitely up there. I'm also a 
+                    huge fan of Japanese dishes like sushi, teriyaki and katsu 
+                    curry, though Indian and Italian food is also amazing.
+                </p>
+            </div>
+            <div id='sport' class="favediv hide" onmouseover="showText('sport')" onmouseout="hideText('sport')">
+                <h3>Sport</h3>
+                <p>
+                    Without a doubt, my favourite sport is archery. I joined 
+                    my college's archery club in first year, and it didn't 
+                    take long for me to fall in love with it. I have my own 
+                    bow now, as well as a range set up at home to practise. I 
+                    also enjoy GAA, rugby and darts, but more as a spectator 
+                    than a player.
+                </p>
+            </div>
+            <div id='music' class="favediv hide" onmouseover="showText('music')" onmouseout="hideText('music')">
+                <h3>Music</h3>
+                <p>
+                    I listen to a lot of different genres, so it is really 
+                    difficult for me to pick just one! My favourite artist is 
+                    probably Hozier, he has an amazing voice and his lyrics 
+                    are so poetic. I also like emo, pop-punk, alternative 
+                    rock, electroswing and songs from musicals.
+                </p>
+            </div>
+            <div id='movie' class="favediv hide" onmouseover="showText('movie')" onmouseout="hideText('movie')">
+                <h3>Movie</h3>
+                <p>
+                    I don't watch movies very often, but my favourite would be 
+                    the film Snatch. The film is incredibly funny, and the way 
+                    all of the separate story lines cross and link together is 
+                    so cool to see. I have also watched all of the MCU films 
+                    multiple times, so it would be unfair if I didn’t mention 
+                    them.
+                </p>
+            </div>
+            <div id='tv' class="favediv hide" onmouseover="showText('tv')" onmouseout="hideText('tv')">
+                <h3>TV series</h3>
+                <p>
+                    I do not watch much TV, but I do have a few favourite 
+                    shows. Avatar: The Last Airbender and its sequel Legend of 
+                    Korra are amazing shows that I watched as a child and 
+                    still love now. I also love anime, with some of my 
+                    favourites being Full Metal Alchemist,Erased and BNA.
+                </p>
+            </div>
+            <div id='vgame' class="favediv hide" onmouseover="showText('vgame')" onmouseout="hideText('vgame')">
+                <h3>Video Game</h3>
+                <p>
+                    I am a huge fan of Nintendo games and own a Switch. My 
+                    favourite series is the Legend of Zelda, and my favourite 
+                    Zelda game is Breath of the Wild. I also enjoy Animal 
+                    Crossing, and have enjoyed playing some Assassin's 
+                    Creed games, though there are not many available for the 
+                    Switch.
+                </p>
+            </div>
+            <div id='pastime' class="favediv hide" onmouseover="showText('pastime')" onmouseout="hideText('pastime')">
+                <h3>Pastime</h3>
+                <p>
+                    I absolutely love playing boardgames. I love all kinds of 
+                    games, from the classics like Monopoly and Cluedo, to more 
+                    obscure games like Betrayal and Nothing Personal. I also 
+                    love card games, with my current favourite being the 
+                    Japanese game Hanafuda.
+                </p>
+            </div>
+            <div id='subject' class="favediv hide" onmouseover="showText('subject')" onmouseout="hideText('subject')">
+                <h3>Subject</h3>
+                <p>
+                    I absolutely love mathematics, especially Linear Algebra 
+                    and Graph Theory. Maths is something that has always come 
+                    easily to me, and I love solving difficult problems. In 
+                    computer science, my favourite area is Algorithms, as I 
+                    like looking at different ways of solving the same problem.
+                </p>
+            </div>
+            <div id='animal' class="favediv hide" onmouseover="showText('animal')" onmouseout="hideText('animal')">
+                <h3>Animal</h3>
+                <p>
+                    Honestly, all animals are adorable, but my favourites have 
+                    to be turtles, as they are the cutest thing ever! I'm also 
+                    a huge fan of lizards and snakes, as well as birds like 
+                    owls and penguins. Furry animals like cats and rabbits are 
+                    also cute, but I'm unfortunately allergic to fur.
+                </p>
+            </div>
+        </div>
+      </div>
+      <div id='comments'>
+        <h2>Comments</h2>
+        <p>
+          If you like this page, or have any suggestions on how to improve, 
+          please leave a comment!
+        </p>
+        <div id='comment-section' class="empty">
+        </div>
+        <div id='comment-box'>
+          <label for="name">Name (optional):</label><br>
+          <input type="text" id="name" name="name"><br>
+          <label for="commenttext">Comment:</label><br>
+          <textarea id='commenttext'></textarea><br>
+          <button onclick='addComment()'>Submit</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
