@@ -54,3 +54,6 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD: false
           VALIDATE_JAVASCRIPT_ES: true
           DISABLE_ERRORS: false
+          VALIDATE_CSS: true
+          VALIDATE_HTML: true
+
