@@ -92,3 +92,12 @@ function displayComments () {
   }
   document.getElementById('comment-section').innerHTML = out;
 }
+
+/**
+ * Displays content from /data route
+ */
+function displayData () {
+  fetch('/data').then(response => response.text()).then((data) => {
+    document.getElementById('heading').innerText = data;
+  });
+}
