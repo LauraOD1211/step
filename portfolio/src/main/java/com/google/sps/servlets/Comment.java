@@ -15,15 +15,17 @@
 package com.google.sps.servlets;
 
 import java.util.*;
-
+/**
+ * Object for holding Comment info 
+ */
 public class Comment {
   String name;
   String body;
   Date posted;
 
-  public Comment(String name, String comment) {
-    posted = new Date();
+  public Comment(String name, String body, Date posted) {
+    this.posted = posted;
     this.name = name;
-    this.body = comment;
+    this.body = body;
   }
 }

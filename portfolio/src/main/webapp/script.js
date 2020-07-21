@@ -58,16 +58,13 @@ function hideText (id) {
   }
 }
 
-
 /**
  * Displays all comments
  */
 function displayComments () {
   fetch("/data").then(response => response.json()).then((comments) => {
-    console.log(comments);
     var out = '';
     for (var i = 0; i < comments.length; i++) {
-      console.log(comments[i]);
       if (document.getElementById('comment-section').classList.contains('empty')) {
         document.getElementById('comment-section').classList.remove('empty');
       }
