@@ -14,19 +14,67 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  ArrayList<Comment> comments = new ArrayList<>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String json = this.convertToJson(this.comments);
+    System.out.println(json);
+    
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+  
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getParameter(request, "name", "Anonymous");
+    String body = getParameter(request, "body", "");
+
+    Comment newComment = new Comment(name, body);
+    this.comments.add(newComment);
+
     response.setContentType("text/html;");
-    response.getWriter().println("Hello Laura!");
+    response.sendRedirect("/#comments");
+
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
+
+  private String convertToJsonold(ArrayList<Comment> comments) {
+    String out = "{\"comments\":[";
+    boolean first = true;
+    for(Comment comment: comments){
+      if(!first){
+        out += ",";
+      }
+      first = false;
+      //out += comment.printJson();
+    }
+    out += "]}";
+    return out;
+  }
+
+  private String convertToJson(ArrayList<Comment> comments) {
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+    return json;
   }
 }

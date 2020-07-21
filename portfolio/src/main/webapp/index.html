@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   </head>
-  <body>    
+  <body onload="displayComments()">    
     <div id="content">
       <h1 id="heading">My Portfolio</h1>
       <div id="about-me">
-        <img id="me" src="images/20190828_151405.jpg" alt="Photo of me and my friend" onclick="displayData()"/>
+        <img id="me" src="images/20190828_151405.jpg" alt="Photo of me and my friend" />
         <div>
           <h2>About Me</h2>
           <p>
@@ -178,13 +178,13 @@
         </p>
         <div id="comment-section" class="empty">
         </div>
-        <div id="comment-box">
+        <form id="comment-box" action="/data" method="POST">
           <label for="name">Name (optional):</label><br>
           <input type="text" id="name" name="name"><br>
           <label for="commenttext">Comment:</label><br>
-          <textarea id="commenttext"></textarea><br>
-          <button onclick="addComment()">Submit</button>
-        </div>
+          <textarea id="commenttext" name="body"></textarea><br>
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
     <script src="script.js"></script>
