@@ -68,10 +68,7 @@ public class DataServlet extends HttpServlet {
     String name = getParameter(request, "name", "Anonymous");
     String body = getParameter(request, "body", "");
 
-    if (body.isEmpty()){
-      response.sendRedirect("/#comments");
-    }
-    else {
+    if (!body.isEmpty()){
       //Creates entity for comment
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("name", name);
@@ -81,10 +78,10 @@ public class DataServlet extends HttpServlet {
       //Stores comment in datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
-
-      //Refreshes page
-      response.sendRedirect("/#comments");
     }
+
+    //Refreshes page
+    response.sendRedirect("/#comments");
   }
 
   /**
@@ -95,8 +92,7 @@ public class DataServlet extends HttpServlet {
     if (value == null || value.isEmpty()) {
       return defaultValue;
     }
-    //return sanitiseInput(value);
-    return value;
+    return sanitiseInput(value);
   }
 
   /**
