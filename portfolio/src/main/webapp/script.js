@@ -62,7 +62,9 @@ function hideText (id) {
  * Displays all comments
  */
 function displayComments () {
-  fetch("/data").then(response => response.json()).then((comments) => {
+  console.log("called");
+  const numComments = document.getElementById('numComments').value;
+  fetch("/data?comments="+numComments).then(response => response.json()).then((comments) => {
     var out = '';
     for (var i = 0; i < comments.length; i++) {
       if (document.getElementById('comment-section').classList.contains('empty')) {

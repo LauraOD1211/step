@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+/** Servlet that returns comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
   /**
@@ -38,12 +39,12 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     //Queries datastore for comments
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Comment").addSort("posted", SortDirection.ASCENDING);
+    Query query = new Query("Comment").addSort("posted", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 
     //Converts result from query into array of comment objects
     ArrayList<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(Integer.parseInt(request.getParameter("comments"))))) {
       String name = (String) entity.getProperty("name");
       String body = (String) entity.getProperty("body");
       Date posted = (Date) entity.getProperty("posted");
@@ -94,7 +95,8 @@ public class DataServlet extends HttpServlet {
     if (value == null || value.isEmpty()) {
       return defaultValue;
     }
-    return sanitiseInput(value);
+    //return sanitiseInput(value);
+    return value;
   }
 
   /**
@@ -111,6 +113,7 @@ public class DataServlet extends HttpServlet {
   private String convertToJson(ArrayList<Comment> comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
+    System.out.println(json);
     return json;
   }
 }
