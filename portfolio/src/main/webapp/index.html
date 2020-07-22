@@ -176,8 +176,9 @@
           If you like this page, or have any suggestions on how to improve, 
           please leave a comment!
         </p>
-        <div id="comment-section">
+        <div id="comment-section" class="empty">
         </div>
+        <button onclick="deleteComments()">Click here to remove all comments</button>
         <div id="commentNums">
           <label for="numComments">Comments on display:</label>
           <input type="number" id="numComments" name="numComments" value="5" onchange="displayComments()" min="1" max="10">

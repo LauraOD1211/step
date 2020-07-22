@@ -75,3 +75,11 @@ function displayComments () {
     document.getElementById('comment-section').innerHTML = out;
   });
 }
+
+function deleteComments () {
+  const request = new Request('/delete-data', {method: 'POST'});
+  fetch(request).then((response) => {
+    document.getElementById('comment-section').classList.add('empty');
+    displayComments();
+  });
+}
