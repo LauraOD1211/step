@@ -16,8 +16,6 @@
  * Adds a random fact to the page.
  */
 
-const commentArray = [];
-
 function addRandomFact () {
   const facts =
     ['I am from Donegal in Ireland',
@@ -61,34 +59,19 @@ function hideText (id) {
 }
 
 /**
- * Adds comment to JSON document
- */
-function addComment () {
-  var name = document.getElementById('name').value;
-  const body = document.getElementById('commenttext').value;
-  const date = Date.now();
-  if (name === '') {
-    name = 'Anonymous';
-  }
-  if (body !== '') {
-    var comment = { 'name': name, 'comment': body, 'posted': date };
-    commentArray.push(comment);
-  }
-  document.getElementById('commenttext').value = '';
-  displayComments();
-}
-
-/**
  * Displays all comments
  */
 function displayComments () {
-  var out = '';
-  for (var i = 0; i < commentArray.length; i++) {
-    out += '<div class=\'comment\'><h3>' + commentArray[i].name +
-    '</h3><p>' + commentArray[i].comment + '</p></div>';
-  }
-  if (document.getElementById('comment-section').classList.contains('empty')) {
-    document.getElementById('comment-section').classList.remove('empty');
-  }
-  document.getElementById('comment-section').innerHTML = out;
+  const numComments = document.getElementById('numComments').value;
+  fetch("/data?comments="+numComments).then(response => response.json()).then((comments) => {
+    var out = '';
+    for (var i = 0; i < comments.length; i++) {
+      if (document.getElementById('comment-section').classList.contains('empty')) {
+        document.getElementById('comment-section').classList.remove('empty');
+      }
+      out += '<div class=\'comment\'><h3>' + comments[i].name +
+      '</h3><p>' + comments[i].body + '</p></div>';
+    }
+    document.getElementById('comment-section').innerHTML = out;
+  });
 }

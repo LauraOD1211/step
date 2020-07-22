@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   </head>
-  <body>    
+  <body onload="displayComments()">    
     <div id="content">
-      <h1>My Portfolio</h1>
+      <h1 id="heading">My Portfolio</h1>
       <div id="about-me">
-        <img id="me" src="images/20190828_151405.jpg" alt="Photo of me and my friend"/>
+        <img id="me" src="images/20190828_151405.jpg" alt="Photo of me and my friend" />
         <div>
           <h2>About Me</h2>
           <p>
@@ -176,15 +176,19 @@
           If you like this page, or have any suggestions on how to improve, 
           please leave a comment!
         </p>
-        <div id="comment-section" class="empty">
+        <div id="comment-section">
         </div>
-        <div id="comment-box">
+        <div id="commentNums">
+          <label for="numComments">Comments on display:</label>
+          <input type="number" id="numComments" name="numComments" value="5" onchange="displayComments()" min="1" max="10">
+        </div>
+        <form id="comment-box" action="/data" method="POST">
           <label for="name">Name (optional):</label><br>
           <input type="text" id="name" name="name"><br>
           <label for="commenttext">Comment:</label><br>
-          <textarea id="commenttext"></textarea><br>
-          <button onclick="addComment()">Submit</button>
-        </div>
+          <textarea id="commenttext" name="body"></textarea><br>
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
     <script src="script.js"></script>
