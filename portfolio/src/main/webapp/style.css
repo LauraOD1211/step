@@ -183,3 +183,26 @@ a:hover {
   font-size: 18px;
   display: block;
 }
+
+#commentNums {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  justify-items: center;
+  align-items: center;
+  background-color: #2f4550;
+  border-radius: 2em;
+  padding: 1em;
+  color: #f4f4f9;
+}
+
+#delete {
+  color: #586f7c;
+  background-color: #f4f4f9;
+  border-color: #f4f4f9;
+  border-style: solid;
+  padding: 1%;
+  text-align: center;
+  font-size: 14px;
+  border-radius: 2em;
+  justify-self: end;
+}
