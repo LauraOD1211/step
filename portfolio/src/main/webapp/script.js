@@ -69,8 +69,12 @@ function displayComments () {
       if (document.getElementById('comment-section').classList.contains('empty')) {
         document.getElementById('comment-section').classList.remove('empty');
       }
-      out += '<div class=\'comment\'><h3>' + comments[i].name +
-      '</h3><p>' + comments[i].body + '</p></div>';
+      out += '<div class=\'comment unvoted\' id="' + comments[i].id + '"><h3>' + 
+      comments[i].name + '</h3><p>' + comments[i].body + '</p>' + 
+      '<button onclick="updateVotes(\'' + comments[i].id + '\', \'up\')">Upvote</button>' +
+      '<p>' + comments[i].votes + '</p>' +
+      '<button onclick="updateVotes(\'' + comments[i].id + '\', \'down\')">Downvote</button>' +
+      '</div>';
     }
     document.getElementById('comment-section').innerHTML = out;
   });
@@ -89,4 +93,68 @@ function deleteComments () {
       }
     });
   }
+}
+
+/**
+ * Updates and displays votes
+ */
+function updateVotes (id, vote) {
+  switch (vote) {
+    case "up":
+      console.log('upvote init');
+      if (document.getElementById(id).classList.contains("unvoted")) {
+        upvote(id);
+        document.getElementById(id).classList.replace("unvoted", "upvoted");
+      } else if (document.getElementById(id).classList.contains("upvoted")) {
+        downvote(id);
+      } else if (document.getElementById(id).classList.contains("downvoted")) {
+        upvote(id);
+        upvote(id);
+        document.getElementById(id).classList.replace("unvoted", "upvoted");  
+      }
+      break;
+    case "down":
+      console.log('Downvote init')
+      if (document.getElementById(id).classList.contains("unvoted")) {
+        downvote(id);
+        document.getElementById(id).classList.replace("unvoted", "downvoted");
+      } else if (document.getElementById(id).classList.contains("downvoted")) {
+        upvote(id);
+      } else if (document.getElementById(id).classList.contains("upvoted")) {
+        downvote(id);
+        downvote(id);
+        document.getElementById(id).classList.replace("unvoted", "downvoted");  
+      }
+      break;
+    default:
+      console.log('Default');
+  }
+}
+
+/**
+ * Updates datastore to reflect upvotes
+ */
+function upvote (id) {
+  console.log('upvote called');
+  const request = new Request('/vote?id='+id+'&votes=up', {method: 'POST'});
+  fetch(request).then(response => response.json()).then((res) => {
+    if (res.message=='success'){
+      console.log('success');
+      displayComments();
+    }
+  });
+}
+
+/**
+ * Updates datastore to reflect downvotes
+ */
+function downvote (id) {
+  console.log('downvote called');
+  const request = new Request('/vote?id='+id+'&votes=down', {method: 'POST'});
+  fetch(request).then(response => response.json()).then((res) => {
+    if (res.message=='success'){
+      console.log('success');
+      displayComments();
+    }
+  });
 }
