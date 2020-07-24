@@ -35,18 +35,23 @@ public class DeleteServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Queries datastore for comments
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Comment");
-    PreparedQuery results = datastore.prepare(query);
+    String pass = request.getParameter("pass");
+    if (pass.equals("tempDeletePass")){ //Will eventually be made env variable
+      //Queries datastore for comments
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      Query query = new Query("Comment");
+      PreparedQuery results = datastore.prepare(query);
 
-    //Converts result from query into array of comment objects
-
-    for (Entity entity : results.asIterable()) {
-      Key key = entity.getKey();
-      datastore.delete(key);
+      //Converts result from query into array of comment objects
+      for (Entity entity : results.asIterable()) {
+        Key key = entity.getKey();
+        datastore.delete(key);
+      }
+      response.setContentType("application/json;");
+      response.getWriter().println("{\"message\":\"success\"}");
+    } else {
+      response.setContentType("application/json;");
+      response.getWriter().println("{\"message\":\"incorrect\"}"); 
     }
-
-    response.sendRedirect("/#comments");
   };
 }

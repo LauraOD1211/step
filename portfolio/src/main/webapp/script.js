@@ -77,9 +77,16 @@ function displayComments () {
 }
 
 function deleteComments () {
-  const request = new Request('/delete-data', {method: 'POST'});
-  fetch(request).then((response) => {
-    document.getElementById('comment-section').classList.add('empty');
-    displayComments();
-  });
+  var pass = prompt("Enter admin password to continue:", "");  
+  if(pass != null) {
+    const request = new Request('/delete-data?pass='+pass, {method: 'POST'});
+    fetch(request).then(response => response.json()).then((res) => {
+      if (res.message=='success'){
+        document.getElementById('comment-section').classList.add('empty');
+        displayComments();
+      } else if (res.message=="incorrect") {
+        alert("Access denied");
+      }
+    });
+  }
 }

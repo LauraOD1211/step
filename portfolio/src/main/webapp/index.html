@@ -178,10 +178,12 @@
         </p>
         <div id="comment-section">
         </div>
-        <button onclick="deleteComments()">Click here to remove all comments</button>
         <div id="commentNums">
-          <label for="numComments">Comments on display:</label>
-          <input type="number" id="numComments" name="numComments" value="5" onchange="displayComments()" min="1" max="10">
+          <div>
+            <label for="numComments">Comments on display:</label>
+            <input type="number" id="numComments" name="numComments" value="5" onchange="displayComments()" min="1" max="10">
+          </div>
+        <button id="delete" onclick="deleteComments()">Remove all comments</button>
         </div>
         <form id="comment-box" action="/data" method="POST">
           <label for="name">Name (optional):</label><br>
