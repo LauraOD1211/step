@@ -101,7 +101,6 @@ function deleteComments () {
 function updateVotes (id, vote) {
   switch (vote) {
     case "up":
-      console.log('upvote init');
       if (document.getElementById(id).classList.contains("unvoted")) {
         upvote(id);
         document.getElementById(id).classList.replace("unvoted", "upvoted");
@@ -114,7 +113,6 @@ function updateVotes (id, vote) {
       }
       break;
     case "down":
-      console.log('Downvote init')
       if (document.getElementById(id).classList.contains("unvoted")) {
         downvote(id);
         document.getElementById(id).classList.replace("unvoted", "downvoted");
@@ -126,8 +124,6 @@ function updateVotes (id, vote) {
         document.getElementById(id).classList.replace("unvoted", "downvoted");  
       }
       break;
-    default:
-      console.log('Default');
   }
 }
 
@@ -135,11 +131,9 @@ function updateVotes (id, vote) {
  * Updates datastore to reflect upvotes
  */
 function upvote (id) {
-  console.log('upvote called');
   const request = new Request('/vote?id='+id+'&votes=up', {method: 'POST'});
   fetch(request).then(response => response.json()).then((res) => {
     if (res.message=='success'){
-      console.log('success');
       displayComments();
     }
   });
@@ -149,11 +143,9 @@ function upvote (id) {
  * Updates datastore to reflect downvotes
  */
 function downvote (id) {
-  console.log('downvote called');
   const request = new Request('/vote?id='+id+'&votes=down', {method: 'POST'});
   fetch(request).then(response => response.json()).then((res) => {
     if (res.message=='success'){
-      console.log('success');
       displayComments();
     }
   });
