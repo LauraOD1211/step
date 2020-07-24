@@ -39,20 +39,13 @@ public class VoteServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
     // Get the input from the form.
     long id = Long.parseLong(request.getParameter("id"));
-    String vote =  request.getParameter("votes");
-    int count = 0;
-    if (vote.equals("up")){
-        count = 1;
-    }
-    if (vote.equals("down")){
-        count = -1;
-    }
+    long newVote =  Long.parseLong(request.getParameter("votes"));
     Key key = KeyFactory.createKey("Comment", id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     try{
       Entity comment = datastore.get(key);
-      long votes = (long) comment.getProperty("votes");
-      comment.setProperty("votes", votes+count);
+      long currVotes = (long) comment.getProperty("votes");
+      comment.setProperty("votes", currVotes+newVote);
       datastore.put(comment);
       response.setContentType("application/json;");
       response.getWriter().println("{\"message\":\"success\"}"); 

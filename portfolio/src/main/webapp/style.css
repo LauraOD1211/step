@@ -140,11 +140,22 @@ a:hover {
 }
 
 .comment {
+  display: grid;
+  grid-template-columns: 80% 20%;
   background-color: #f4f4f9;
   width: 95%;
   margin: auto;
   margin-bottom: 1%;
   padding: 2.5%;
+}
+
+.comment h4 {
+  grid-column: 1 / span 2;
+  padding: 0px;
+}
+
+.votes {
+  justify-self: right;
 }
 
 .comment:first-child {
@@ -205,4 +216,12 @@ a:hover {
   font-size: 14px;
   border-radius: 2em;
   justify-self: end;
+}
+
+.upvoted i.up {
+  color: green;
+}
+
+.downvoted i.down{
+  color: red;
 }
