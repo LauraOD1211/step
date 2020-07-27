@@ -15,7 +15,6 @@
 /**
  * Adds a random fact to the page.
  */
-
 function addRandomFact () {
   const facts =
     ['I am from Donegal in Ireland',
@@ -58,6 +57,9 @@ function hideText (id) {
   }
 }
 
+//Map for comments and votes
+let commentMap = new Map();
+
 /**
  * Displays all comments
  */
@@ -69,13 +71,26 @@ function displayComments () {
       if (document.getElementById('comment-section').classList.contains('empty')) {
         document.getElementById('comment-section').classList.remove('empty');
       }
-      out += '<div class=\'comment\'><h3>' + comments[i].name +
-      '</h3><p>' + comments[i].body + '</p></div>';
+      if(!commentMap.has(comments[i].id)){
+        commentMap.set(comments[i].id, 'unvoted');
+      }
+      out += '<div class=\'comment ' + commentMap.get(comments[i].id) + '\' id="' + comments[i].id + '">' +
+      '<h4>' + comments[i].name + '</h4>' + 
+      '<p>' + comments[i].body + '</p>' + 
+      '<div class="votes">' + 
+      '<i class="material-icons md-24 up" onclick="updateVotes(' + comments[i].id + ', \'up\')">north</i>' +
+      '<span>' + comments[i].votes + '</span>' +
+      '<i class="material-icons md-24 down" onclick="updateVotes(' + comments[i].id + ', \'down\')">south</i>' +
+      '</div>' +
+      '</div>';    
     }
     document.getElementById('comment-section').innerHTML = out;
   });
 }
 
+/**
+ * Removes all comments if correct password entered
+ */
 function deleteComments () {
   var pass = prompt("Enter admin password to continue:", "");  
   if(pass != null) {
@@ -89,4 +104,90 @@ function deleteComments () {
       }
     });
   }
+}
+
+/**
+ * Updates votes - checks the current state of the buttons (in case already 
+ * up/downvoted) and which button user pressed, and updates accordingly
+ * -If user presses same button twice, it undoes the vote
+ * -If user presses both buttons, the first pressed button is unpressed, and the second
+ *  is pressed
+ */
+function updateVotes (id, vote) {
+  var numVotes = 0;
+  /*switch (vote) {
+    //User upvotes
+    case "up":
+      if (commentMap.get(id)=="unvoted") { //not upvoted before, so upvote
+        commentMap.set(id, "upvoted");
+        numVotes = 1;
+      } else if (commentMap.get(id)=="upvoted") { //already upvoted, so unvote
+        commentMap.set(id, "unvoted");
+        numVotes = -1;
+      } else if (commentMap.get(id)=="downvoted") { //downvoted, so undownvote (+1) then upvote(+1)
+        commentMap.set(id, "upvoted"); 
+        numVotes = 2; 
+      }
+      break;
+    //user downvotes
+    case "down":
+      if (commentMap.get(id)=="unvoted") {
+        commentMap.set(id, "downvoted");
+        numVotes =  -1;
+      } else if (commentMap.get(id)=="downvoted") {
+        commentMap.set(id, "unvoted");
+        numVotes = 1;
+      } else if (commentMap.get(id)=="upvoted") {
+        commentMap.set(id, "downvoted"); 
+        numVotes = -2;
+      }
+      break;
+  }*/
+  switch (commentMap.get(id)) {
+    //not upvoted before
+    case "unvoted":
+      if (vote == "up") { 
+        commentMap.set(id, "upvoted");
+        numVotes = 1;
+      } 
+      else if (vote == "down") {
+        commentMap.set(id, "downvoted");
+        numVotes =  -1;
+      }
+      break;
+    //already upvoted
+    case "upvoted":
+      if (vote == "up") { //undoes upvote
+        commentMap.set(id, "unvoted");
+        numVotes = -1; 
+      } else if (vote == "down") { //changes upvote to downvote
+        commentMap.set(id, "downvoted"); 
+        numVotes = -2;
+      }
+      break;
+    //already downvoted
+    case "downvoted":
+      if (vote == "up") { //changes downvote to upvote
+        commentMap.set(id, "upvoted"); 
+        numVotes = 2;
+      }  else if (vote == "down") { //undoes downvote
+        commentMap.set(id, "unvoted");
+        numVotes = 1;
+      }
+      break;
+  }
+  recordVote(id, numVotes);
+  displayComments();
+}
+
+/**
+ * Updates datastore to reflect votes
+ */
+function recordVote (id, votes) {
+  const request = new Request('/vote?id='+id+'&votes=' + votes, {method: 'POST'});
+  fetch(request).then(response => response.json()).then((res) => {
+    if (res.message=='success'){
+      displayComments();
+    }
+  });
 }

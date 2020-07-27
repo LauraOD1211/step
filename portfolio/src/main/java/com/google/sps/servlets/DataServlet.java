@@ -48,8 +48,10 @@ public class DataServlet extends HttpServlet {
       String name = (String) entity.getProperty("name");
       String body = (String) entity.getProperty("body");
       Date posted = (Date) entity.getProperty("posted");
+      long votes = (long) entity.getProperty("votes");
+      long id = entity.getKey().getId();
 
-      Comment comment = new Comment(name, body ,posted);
+      Comment comment = new Comment(id, name, body, posted, votes);
       comments.add(comment);
     }
 
@@ -74,6 +76,7 @@ public class DataServlet extends HttpServlet {
       commentEntity.setProperty("name", name);
       commentEntity.setProperty("body", body);
       commentEntity.setProperty("posted", new Date());
+      commentEntity.setProperty("votes", 0);
 
       //Stores comment in datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();

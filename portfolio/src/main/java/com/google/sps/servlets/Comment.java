@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.Key;
 import java.util.*;
 /**
  * Object for holding Comment info 
@@ -22,10 +23,17 @@ public class Comment {
   String name;
   String body;
   Date posted;
+  long votes;
+  long id;
 
-  public Comment(String name, String body, Date posted) {
+  /**
+   * Builder for existing comments
+   */
+  public Comment(long id, String name, String body, Date posted, long votes) {
     this.posted = posted;
     this.name = name;
     this.body = body;
+    this.votes = votes;
+    this.id = id;
   }
 }
