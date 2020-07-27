@@ -72,7 +72,7 @@ public class DataServlet extends HttpServlet {
 
     //Converts comments to JSON and sets response
     String json = this.convertToJson(comments);
-    response.setContentType("application/json;");
+    response.setContentType("application/json;  charset=UTF-8");
     response.getWriter().println(json);
   }
 

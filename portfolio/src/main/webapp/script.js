@@ -66,6 +66,7 @@ let commentMap = new Map();
 function displayComments () {
   const numComments = document.getElementById('numComments').value;
   const language = document.getElementById('language').value;
+  document.getElementById('comment-section').innerHTML = "<p>Loading...</p>";
   fetch("/data?comments="+numComments+"&language="+language).then(response => response.json()).then((comments) => {
     var out = '';
     for (var i = 0; i < comments.length; i++) {
@@ -85,7 +86,6 @@ function displayComments () {
       '<i class="material-icons md-24 down" onclick="updateVotes(' + comments[i].id + ', \'down\')">south</i>' +
       '</div>' +
       '</div>';  
-      console.log(comments[i].body);  
     }
     document.getElementById('comment-section').innerHTML = out;
   });
