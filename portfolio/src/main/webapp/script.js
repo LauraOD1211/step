@@ -78,6 +78,7 @@ function displayComments () {
       '<h4>' + comments[i].name + '</h4>' + 
       '<p>' + comments[i].body + '</p>' + 
       '<div class="votes">' + 
+      '<i class="material-icons md-24 up">' + getSentimentIcon(comments[i].score) + '</i>' +
       '<i class="material-icons md-24 up" onclick="updateVotes(' + comments[i].id + ', \'up\')">north</i>' +
       '<span>' + comments[i].votes + '</span>' +
       '<i class="material-icons md-24 down" onclick="updateVotes(' + comments[i].id + ', \'down\')">south</i>' +
@@ -115,34 +116,6 @@ function deleteComments () {
  */
 function updateVotes (id, vote) {
   var numVotes = 0;
-  /*switch (vote) {
-    //User upvotes
-    case "up":
-      if (commentMap.get(id)=="unvoted") { //not upvoted before, so upvote
-        commentMap.set(id, "upvoted");
-        numVotes = 1;
-      } else if (commentMap.get(id)=="upvoted") { //already upvoted, so unvote
-        commentMap.set(id, "unvoted");
-        numVotes = -1;
-      } else if (commentMap.get(id)=="downvoted") { //downvoted, so undownvote (+1) then upvote(+1)
-        commentMap.set(id, "upvoted"); 
-        numVotes = 2; 
-      }
-      break;
-    //user downvotes
-    case "down":
-      if (commentMap.get(id)=="unvoted") {
-        commentMap.set(id, "downvoted");
-        numVotes =  -1;
-      } else if (commentMap.get(id)=="downvoted") {
-        commentMap.set(id, "unvoted");
-        numVotes = 1;
-      } else if (commentMap.get(id)=="upvoted") {
-        commentMap.set(id, "downvoted"); 
-        numVotes = -2;
-      }
-      break;
-  }*/
   switch (commentMap.get(id)) {
     //not upvoted before
     case "unvoted":
@@ -190,4 +163,25 @@ function recordVote (id, votes) {
       displayComments();
     }
   });
+}
+
+/**
+ * Returns appropriate icon for sentiment
+ */
+function getSentimentIcon (score) {
+  if (score <= -0.6) {
+    return "mood_bad";
+  }
+  else if (score <= -0.2) {
+    return "sentiment_very_dissatisfied";
+  }
+  else if (score <= 0.2) {
+    return "sentiment_dissatisfied";
+  }
+  else if (score <= 0.6) {
+    return "sentiment_satisfied";
+  }
+  else {
+      return "sentiment_very_satisfied";
+  }
 }

@@ -27,7 +27,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.Date;
+import java.util.ArrayList;
+import com.google.cloud.language.v1.Document;
+import com.google.cloud.language.v1.LanguageServiceClient;
+import com.google.cloud.language.v1.Sentiment;
 
 /** Servlet that returns comments data */
 @WebServlet("/data")
@@ -49,9 +53,10 @@ public class DataServlet extends HttpServlet {
       String body = (String) entity.getProperty("body");
       Date posted = (Date) entity.getProperty("posted");
       long votes = (long) entity.getProperty("votes");
+      double score = (double) entity.getProperty("score");
       long id = entity.getKey().getId();
 
-      Comment comment = new Comment(id, name, body, posted, votes);
+      Comment comment = new Comment(id, name, body, posted, votes, score);
       comments.add(comment);
     }
 
@@ -71,12 +76,16 @@ public class DataServlet extends HttpServlet {
     String body = getParameter(request, "body", "");
 
     if (!body.isEmpty()){
+      //Retrieves comment Sentiment score
+      float sentimentScore = calculateSentimentScore(body);
+
       //Creates entity for comment
       Entity commentEntity = new Entity("Comment");
       commentEntity.setProperty("name", name);
       commentEntity.setProperty("body", body);
       commentEntity.setProperty("posted", new Date());
       commentEntity.setProperty("votes", 0);
+      commentEntity.setProperty("score", sentimentScore);
 
       //Stores comment in datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -113,5 +122,15 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
+  }
+
+  private float calculateSentimentScore(String message) throws IOException { //make float when working
+    Document doc =
+      Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
+    LanguageServiceClient languageService = LanguageServiceClient.create();
+    Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
+    float score = sentiment.getScore();
+    languageService.close();
+    return score;
   }
 }
