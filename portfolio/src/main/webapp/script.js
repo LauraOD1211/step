@@ -193,20 +193,24 @@ function getSentimentIcon (score) {
  */
 function translateAll () {
   const language = document.getElementById("pageLanguage").value;  
-  var content = document.getElementsByClassName("text");
-  var textArray = [];
-  for (var i = 0; i < content.length; i++) {
-    textArray[i] = content[i].innerText;
-  }
-  
-  const params = new URLSearchParams();
-  params.append('content', JSON.stringify(textArray));
-  params.append('language', language);
-
-  //const request = new Request('/translate', {method: 'POST', body: formData});
-  fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
+  if (language == 'EN') {
+    location.reload();
+  } else {
+    var content = document.getElementsByClassName("text");
+    var textArray = [];
     for (var i = 0; i < content.length; i++) {
-      content[i].innerText = res[i];
+      textArray[i] = content[i].innerText;
     }
-  });
+  
+    const params = new URLSearchParams();
+    params.append('content', JSON.stringify(textArray));
+    params.append('language', language);
+
+    //const request = new Request('/translate', {method: 'POST', body: formData});
+    fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
+      for (var i = 0; i < content.length; i++) {
+        content[i].innerText = res[i];
+      }
+    });
+  }
 }
