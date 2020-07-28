@@ -25,15 +25,17 @@ public class Comment {
   Date posted;
   long votes;
   long id;
+  double score;
 
   /**
    * Builder for existing comments
    */
-  public Comment(long id, String name, String body, Date posted, long votes) {
+  public Comment(long id, String name, String body, Date posted, long votes, double score) {
     this.posted = posted;
     this.name = name;
     this.body = body;
     this.votes = votes;
     this.id = id;
+    this.score = score;
   }
 }
