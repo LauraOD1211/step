@@ -199,7 +199,7 @@ function translateAll () {
     var content = document.getElementsByClassName("text");
     var textArray = [];
     for (var i = 0; i < content.length; i++) {
-      textArray[i] = content[i].innerText;
+      textArray[i] = content[i].innerHTML;
     }
   
     const params = new URLSearchParams();
@@ -209,7 +209,7 @@ function translateAll () {
     //const request = new Request('/translate', {method: 'POST', body: formData});
     fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
       for (var i = 0; i < content.length; i++) {
-        content[i].innerText = res[i];
+        content[i].innerHTML = res[i];
       }
     });
   }
