@@ -187,3 +187,26 @@ function getSentimentIcon (score) {
       return "sentiment_very_satisfied";
   }
 }
+
+/**
+ * Takes all text elements of the site and translates them
+ */
+function translateAll () {
+  const language = document.getElementById("pageLanguage").value;  
+  var content = document.getElementsByClassName("text");
+  var textArray = [];
+  for (var i = 0; i < content.length; i++) {
+    textArray[i] = content[i].innerText;
+  }
+  
+  const params = new URLSearchParams();
+  params.append('content', JSON.stringify(textArray));
+  params.append('language', language);
+
+  //const request = new Request('/translate', {method: 'POST', body: formData});
+  fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
+    for (var i = 0; i < content.length; i++) {
+      content[i].innerText = res[i];
+    }
+  });
+}
