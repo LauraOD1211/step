@@ -109,8 +109,30 @@ public class DataServlet extends HttpServlet {
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
 
-      //Refresh cache now there's a new comment
-      cacheComments();
+      //Create comment object
+      Date posted = (Date) commentEntity.getProperty("posted");
+      long id = commentEntity.getKey().getId();
+      Comment comment = new Comment(id, name, body, posted, 0, sentimentScore);
+
+      //Connect to cache
+      Cache cache;
+      try {
+        CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+        cache = cacheFactory.createCache(Collections.emptyMap());
+      } catch (CacheException e) {
+        System.out.println("Cache error");
+        return;
+      }
+
+      //Add comment to cache
+      ArrayList<Comment> comments;
+      if (cache.containsKey("comments")){
+        comments = (ArrayList<Comment>) cache.get("comments");
+      } else {
+        comments = new ArrayList<>();
+      }
+      comments.add(0, comment);
+      cache.put("comments", comments);
     }
    
     //Refreshes page
