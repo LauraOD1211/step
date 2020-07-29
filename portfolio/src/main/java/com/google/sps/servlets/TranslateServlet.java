@@ -28,6 +28,7 @@ import javax.cache.Cache;
 import javax.cache.CacheException;
 import javax.cache.CacheFactory;
 import javax.cache.CacheManager;
+import javax.cache.CacheStatistics;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class TranslateServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     //Set up cache
-    Cache cache = null;
+    Cache cache;
     try {
       CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
       Map<Object, Object> properties = new HashMap<>();
@@ -49,18 +50,20 @@ public class TranslateServlet extends HttpServlet {
       cache = cacheFactory.createCache(properties);
     } catch (CacheException e) {
       System.out.println("Cache error");
+      return;
     } 
 
     // Get the request parameters.
     String[] textArray = convertFromJson(request.getParameter("content"));
     String language = request.getParameter("language");
-    ArrayList<String> translatedText = new ArrayList<>();
+    ArrayList<String> translatedText;
 
-    if ( cache.containsKey(language)){
+    if (cache.containsKey(language)){
       translatedText = (ArrayList<String>) cache.get(language);
       System.out.println("Retrieved from cache");
     } else {
       // Do the translation.
+      translatedText = new ArrayList<>();
       Translate translate = TranslateOptions.getDefaultInstance().getService();
       for (String content: textArray) {
         Translation translation =
@@ -70,10 +73,14 @@ public class TranslateServlet extends HttpServlet {
       System.out.println("Generated");
     }
 
-    System.out.println(translatedText);
-
     //Puts result in cache
     cache.put(language, translatedText);
+
+    //Prints cache statistics
+    CacheStatistics stats = cache.getCacheStatistics();
+    int hits = stats.getCacheHits();
+    int misses = stats.getCacheMisses();
+    System.out.println("Hits: " + hits + "\nMisses: " + misses);
 
     // Output the translation.
     response.setContentType("application/json; charset=UTF-8");

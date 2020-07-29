@@ -197,16 +197,12 @@ function translateAll () {
     location.reload();
   } else {
     var content = document.getElementsByClassName("text");
-    var textArray = [];
-    for (var i = 0; i < content.length; i++) {
-      textArray[i] = content[i].innerHTML;
-    }
+    const textArray = Array.prototype.map.call(content, (el) => el.innerHTML);
   
     const params = new URLSearchParams();
     params.append('content', JSON.stringify(textArray));
     params.append('language', language);
 
-    //const request = new Request('/translate', {method: 'POST', body: formData});
     fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
       for (var i = 0; i < content.length; i++) {
         content[i].innerHTML = res[i];
