@@ -14,18 +14,20 @@
 
 package com.google.sps.servlets;
 
+import java.io.Serializable;
 import com.google.appengine.api.datastore.Key;
-import java.util.*;
+import java.util.Date;
+import com.google.appengine.api.datastore.Entity;
 /**
  * Object for holding Comment info 
  */
-public class Comment {
-  String name;
-  String body;
-  Date posted;
-  long votes;
-  long id;
-  double score;
+public class Comment implements Serializable {
+  private String name;
+  private String body;
+  private Date posted;
+  private long votes;
+  private long id;
+  private double score;
 
   /**
    * Builder for existing comments
@@ -37,5 +39,13 @@ public class Comment {
     this.votes = votes;
     this.id = id;
     this.score = score;
+  }
+
+  public void setBody (String body) {
+    this.body = body;
+  }
+
+  public String getBody () {
+    return body;
   }
 }

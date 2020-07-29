@@ -35,6 +35,12 @@ import com.google.cloud.language.v1.Sentiment;
 import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheFactory;
+import javax.cache.CacheManager;
+import javax.cache.CacheStatistics;
+import java.util.Collections;
 
 /** Servlet that returns comments data */
 @WebServlet("/data")
@@ -48,26 +54,28 @@ public class DataServlet extends HttpServlet {
     int numComments = Integer.parseInt(getParameter(request, "comments", "5"));
     String language = getParameter(request, "language", "EN");
 
-    //Queries datastore for comments
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Comment").addSort("posted", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
+    //Connect to cache
+    Cache cache;
+    try {
+      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+      cache = cacheFactory.createCache(Collections.emptyMap());
+    } catch (CacheException e) {
+      System.out.println("Cache error");
+      return;
+    }
 
-    //Converts result from query into array of comment objects
-    ArrayList<Comment> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(numComments))) {
-      String name = (String) entity.getProperty("name");
-      String body = (String) entity.getProperty("body");
-      Date posted = (Date) entity.getProperty("posted");
-      long votes = (long) entity.getProperty("votes");
-      double score = (double) entity.getProperty("score");
-      long id = entity.getKey().getId();
+    //Retrieve array of comments
+    ArrayList<Comment> comments;
+    if (cache.containsKey("comments")){
+      comments = (ArrayList<Comment>) cache.get("comments");
+      System.out.println("Retrieved from cache");
+    } else {
+      comments = cacheComments();
+    }
 
-      //Translates comment into selected language
-      String translatedBody = translateComment(body, language);
-
-      Comment comment = new Comment(id, name, translatedBody, posted, votes, score);
-      comments.add(comment);
+    //Translate array if necessary
+    if(!language.equals("EN")){
+      translateComments(comments, language);
     }
 
     //Converts comments to JSON and sets response
@@ -100,8 +108,11 @@ public class DataServlet extends HttpServlet {
       //Stores comment in datastore
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
-    }
 
+      //Refresh cache now there's a new comment
+      cacheComments();
+    }
+   
     //Refreshes page
     response.sendRedirect("/#comments");
   }
@@ -147,14 +158,61 @@ public class DataServlet extends HttpServlet {
     return score;
   }
 
-    /**
-   * Converts comments to JSON using Gson 
+  /**
+   * Translates comment body to chosen language 
    */
-  private String translateComment(String body, String languageCode) {
+  private String translateBody(String body, String languageCode) {
     Translate translate = TranslateOptions.getDefaultInstance().getService();
     Translation translation =
         translate.translate(body, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = translation.getTranslatedText();
     return translatedText;
+  }
+
+  /**
+   * Translates arraylist of comments
+   */
+  private void translateComments(ArrayList<Comment> comments, String languageCode) {
+    for(Comment comment: comments) {
+      String body = translateBody(comment.getBody(), languageCode);
+      comment.setBody(body);
+    }
+  }
+
+  /**
+   * Retrieves comments from datastore and caches them
+   */
+  private ArrayList<Comment> cacheComments () {
+    //Initialise cache
+    Cache cache;
+    try {
+      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+      cache = cacheFactory.createCache(Collections.emptyMap());
+    } catch (CacheException e) {
+      System.out.println("Cache error");
+      return null;
+    }
+
+    //Queries datastore for comments
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Comment").addSort("posted", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+
+    //Converts result from query into array of comment objects
+    ArrayList<Comment> comments = new ArrayList<>();
+    for (Entity entity : results.asIterable(FetchOptions.Builder.withLimit(10))) {
+      String name = (String) entity.getProperty("name");
+      String body = (String) entity.getProperty("body");
+      Date posted = (Date) entity.getProperty("posted");
+      long votes = (long) entity.getProperty("votes");
+      double score = (double) entity.getProperty("score");
+      long id = entity.getKey().getId();
+      Comment comment = new Comment(id, name, body, posted, votes, score);
+      comments.add(comment);
+    }
+
+    //Saves array in cache
+    cache.put("comments", comments);
+    return comments;
   }
 }
