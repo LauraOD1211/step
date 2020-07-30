@@ -26,22 +26,88 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import javax.cache.Cache;
+import javax.cache.CacheException;
+import javax.cache.CacheFactory;
+import javax.cache.CacheManager;
+import javax.cache.CacheStatistics;
+import java.util.Collections;
+import java.util.Map;
+import java.util.HashMap;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheService.IdentifiableValue;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import javax.servlet.ServletException;
 
 /** Servlet that returns comments data */
 @WebServlet("/vote")
 public class VoteServlet extends HttpServlet {
+
+  MemcacheService cache;
+  DatastoreService datastore;
+
+  public VoteServlet ()  {
+    //Init cache   
+    cache = MemcacheServiceFactory.getMemcacheService();
+    /*try {
+      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+      Map<Object, Object> properties = new HashMap<>();
+      properties.put(MemcacheService.SetPolicy.ADD_ONLY_IF_NOT_PRESENT, true);
+      cache = cacheFactory.createCache(properties);
+    } catch (CacheException e) {
+      System.out.println("Cache error");
+      return;
+    } */
+
+    //Init datastore
+    datastore = DatastoreServiceFactory.getDatastoreService();
+  }
+
   /**
    * Updates comments with up/downvotes
    */
-
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     // Get the input from the form.
     long id = Long.parseLong(request.getParameter("id"));
     long newVote =  Long.parseLong(request.getParameter("votes"));
     Key key = KeyFactory.createKey("Comment", id);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+    for (long delayMs = 1; delayMs < 1000; delayMs *= 2) {
+      //Retrieve current cache
+      IdentifiableValue oldValue = cache.getIdentifiable("comments");
+      
+      if (oldValue == null){
+        //No comments in cache, just change datastore
+        break;
+      }
+      ArrayList<Comment> comments = (ArrayList<Comment>) cache.get("comments");
+ 
+      //Check if wanted comment is in the cache
+      for(Comment comment: comments) {
+        if (comment.getID() == id) {
+          //If comment found, update and break
+          comment.changeVotes(newVote);
+          break;
+        }
+      }
+      if (cache.putIfUntouched("comments", oldValue, comments)) {
+        // The cache has been successfully updated
+        break;
+      } else {
+        // Something else changed the value since oldValue was retrieved
+        // Wait a while before trying again, waiting longer each time
+        try {
+          Thread.sleep(delayMs);
+        } catch (InterruptedException e) {
+          throw new ServletException("Error when sleeping", e);
+        }
+      }
+    }
+    
+    
+    //Then update in datastore
     try{
       Entity comment = datastore.get(key);
       long currVotes = (long) comment.getProperty("votes");
