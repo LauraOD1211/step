@@ -48,4 +48,25 @@ public class Comment implements Serializable {
   public String getBody () {
     return body;
   }
+
+  public long getID () {
+    return id;
+  }
+
+  public String getName () {
+    return name;
+  }
+  public long getVotes () {
+    return votes;
+  }
+  public Date getPosted () {
+    return posted;
+  }
+  public double getScore () {
+    return score;
+  }
+
+  public void changeVotes (long votes) {
+    this.votes += votes;
+  }
 }

@@ -50,15 +50,6 @@ public class VoteServlet extends HttpServlet {
   public VoteServlet ()  {
     //Init cache   
     cache = MemcacheServiceFactory.getMemcacheService();
-    /*try {
-      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-      Map<Object, Object> properties = new HashMap<>();
-      properties.put(MemcacheService.SetPolicy.ADD_ONLY_IF_NOT_PRESENT, true);
-      cache = cacheFactory.createCache(properties);
-    } catch (CacheException e) {
-      System.out.println("Cache error");
-      return;
-    } */
 
     //Init datastore
     datastore = DatastoreServiceFactory.getDatastoreService();

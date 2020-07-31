@@ -46,7 +46,6 @@ import java.util.List;
 /** Servlet that returns comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
-  //Global variables
   Cache cache;
   DatastoreService datastore;
   Translate translate;
@@ -66,6 +65,8 @@ public class DataServlet extends HttpServlet {
       System.out.println("Cache error");
       return;
     }
+
+    cacheComments();
 
     //Init Translation
     translate = TranslateOptions.getDefaultInstance().getService();
@@ -92,7 +93,13 @@ public class DataServlet extends HttpServlet {
     }
 
     //Take number of comments asked for
-    List<Comment> commentList = comments.subList(0, numComments);
+    List<Comment> commentList;
+    if (numComments < comments.size()) {
+      commentList = comments.subList(0, numComments);
+    }
+    else {
+      commentList = comments;
+    }
 
     //Translate array if necessary
     if(!language.equals("EN")){
@@ -185,7 +192,6 @@ public class DataServlet extends HttpServlet {
       Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
     Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
     float score = sentiment.getScore();
-    //languageService.close();
     return score;
   }
 
