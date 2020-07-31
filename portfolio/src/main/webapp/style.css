@@ -14,6 +14,10 @@ h1 {
   text-align: center;
 }
 
+#pageLanguage {
+  float: right;
+}
+
 #about-me {
   display: grid;
   grid-template-columns: 50% 50%;

@@ -41,10 +41,40 @@ import javax.cache.CacheFactory;
 import javax.cache.CacheManager;
 import javax.cache.CacheStatistics;
 import java.util.Collections;
+import java.util.List;
 
 /** Servlet that returns comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+  Cache cache;
+  DatastoreService datastore;
+  Translate translate;
+  LanguageServiceClient languageService;
+
+
+  //Constructor
+  public DataServlet () throws IOException {
+    //Init Datastore
+    datastore = DatastoreServiceFactory.getDatastoreService();
+
+    //Init cache
+    try {
+      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+      cache = cacheFactory.createCache(Collections.emptyMap());
+    } catch (CacheException e) {
+      System.out.println("Cache error");
+      return;
+    }
+
+    cacheComments();
+
+    //Init Translation
+    translate = TranslateOptions.getDefaultInstance().getService();
+
+    //Init Natural language
+    languageService = LanguageServiceClient.create();
+  }
+
   /**
    * Retrieves comments from datastore, adds to array, and serves as JSON 
    */
@@ -54,32 +84,30 @@ public class DataServlet extends HttpServlet {
     int numComments = Integer.parseInt(getParameter(request, "comments", "5"));
     String language = getParameter(request, "language", "EN");
 
-    //Connect to cache
-    Cache cache;
-    try {
-      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-      cache = cacheFactory.createCache(Collections.emptyMap());
-    } catch (CacheException e) {
-      System.out.println("Cache error");
-      return;
-    }
-
     //Retrieve array of comments
     ArrayList<Comment> comments;
     if (cache.containsKey("comments")){
       comments = (ArrayList<Comment>) cache.get("comments");
-      System.out.println("Retrieved from cache");
     } else {
       comments = cacheComments();
     }
 
+    //Take number of comments asked for
+    List<Comment> commentList;
+    if (numComments < comments.size()) {
+      commentList = comments.subList(0, numComments);
+    }
+    else {
+      commentList = comments;
+    }
+
     //Translate array if necessary
     if(!language.equals("EN")){
-      translateComments(comments, language);
+      translateComments(commentList, language);
     }
 
     //Converts comments to JSON and sets response
-    String json = this.convertToJson(comments);
+    String json = this.convertToJson(commentList);
     response.setContentType("application/json; charset=UTF-8");
     response.getWriter().println(json);
   }
@@ -106,23 +134,12 @@ public class DataServlet extends HttpServlet {
       commentEntity.setProperty("score", sentimentScore);
 
       //Stores comment in datastore
-      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);
 
       //Create comment object
       Date posted = (Date) commentEntity.getProperty("posted");
       long id = commentEntity.getKey().getId();
       Comment comment = new Comment(id, name, body, posted, 0, sentimentScore);
-
-      //Connect to cache
-      Cache cache;
-      try {
-        CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-        cache = cacheFactory.createCache(Collections.emptyMap());
-      } catch (CacheException e) {
-        System.out.println("Cache error");
-        return;
-      }
 
       //Add comment to cache
       ArrayList<Comment> comments;
@@ -161,7 +178,7 @@ public class DataServlet extends HttpServlet {
   /**
    * Converts comments to JSON using Gson 
    */
-  private String convertToJson(ArrayList<Comment> comments) {
+  private String convertToJson(List<Comment> comments) {
     Gson gson = new Gson();
     String json = gson.toJson(comments);
     return json;
@@ -173,10 +190,8 @@ public class DataServlet extends HttpServlet {
   private float calculateSentimentScore(String message) throws IOException { //make float when working
     Document doc =
       Document.newBuilder().setContent(message).setType(Document.Type.PLAIN_TEXT).build();
-    LanguageServiceClient languageService = LanguageServiceClient.create();
     Sentiment sentiment = languageService.analyzeSentiment(doc).getDocumentSentiment();
     float score = sentiment.getScore();
-    languageService.close();
     return score;
   }
 
@@ -184,7 +199,6 @@ public class DataServlet extends HttpServlet {
    * Translates comment body to chosen language 
    */
   private String translateBody(String body, String languageCode) {
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
     Translation translation =
         translate.translate(body, Translate.TranslateOption.targetLanguage(languageCode));
     String translatedText = translation.getTranslatedText();
@@ -194,7 +208,7 @@ public class DataServlet extends HttpServlet {
   /**
    * Translates arraylist of comments
    */
-  private void translateComments(ArrayList<Comment> comments, String languageCode) {
+  private void translateComments(List<Comment> comments, String languageCode) {
     for(Comment comment: comments) {
       String body = translateBody(comment.getBody(), languageCode);
       comment.setBody(body);
@@ -205,18 +219,7 @@ public class DataServlet extends HttpServlet {
    * Retrieves comments from datastore and caches them
    */
   private ArrayList<Comment> cacheComments () {
-    //Initialise cache
-    Cache cache;
-    try {
-      CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-      cache = cacheFactory.createCache(Collections.emptyMap());
-    } catch (CacheException e) {
-      System.out.println("Cache error");
-      return null;
-    }
-
     //Queries datastore for comments
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Comment").addSort("posted", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
 

@@ -38,11 +38,13 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 @WebServlet("/translate")
 public class TranslateServlet extends HttpServlet {
+  Cache cache;
+  Translate translate;
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Set up cache
-    Cache cache;
+  public TranslateServlet () throws IOException {
+    //Init Translation
+    translate = TranslateOptions.getDefaultInstance().getService();
+    //Init cache   
     try {
       CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
       Map<Object, Object> properties = new HashMap<>();
@@ -52,7 +54,10 @@ public class TranslateServlet extends HttpServlet {
       System.out.println("Cache error");
       return;
     } 
+  }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the request parameters.
     String[] textArray = convertFromJson(request.getParameter("content"));
     String language = request.getParameter("language");
@@ -60,7 +65,6 @@ public class TranslateServlet extends HttpServlet {
 
     if (cache.containsKey(language)){
       translatedText = (ArrayList<String>) cache.get(language);
-      System.out.println("Retrieved from cache");
     } else {
       // Do the translation.
       translatedText = new ArrayList<>();
@@ -70,7 +74,6 @@ public class TranslateServlet extends HttpServlet {
           translate.translate(content, Translate.TranslateOption.targetLanguage(language));
         translatedText.add(translation.getTranslatedText());
       }
-      System.out.println("Generated");
     }
 
     //Puts result in cache

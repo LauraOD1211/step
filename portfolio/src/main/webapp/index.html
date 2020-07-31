@@ -8,16 +8,25 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body onload="displayComments()">    
-    <div id="content">
-        <select id="pageLanguage" onchange="translateAll()">
-              <option value="EN" selected="selected">English</option>
-              <option value="ES">Spanish</option>
-              <option value="FR">French</option>
-              <option value="GA">Irish</option>
-              <option value="SV">Swedish</option>
-              <option value="ZH">Chinese</option>
-        </select>
+    <div id="content">  
       <h1 id="heading" class="text">My Portfolio</h1>
+      <select id="pageLanguage" onchange="translateAll()">
+        <option value="AR">العربية</option>
+        <option value="DE">Deutsch</option>
+        <option value="EN" selected="selected">English</option>
+        <option value="ES">Español</option>
+        <option value="FR">Français</option>
+        <option value="GA">Gaeilge</option>
+        <option value="IT">Italiano</option>
+        <option value="JA">日本語</option>
+        <option value="KO">한국어</option>
+        <option value="SV">Svenska</option>
+        <option value="RO">Română</option>
+        <option value="RU">русский</option>
+        <option value="SW">Kiswahili</option>
+        <option value="UK">Українська</option>
+        <option value="ZH">中文</option> 
+      </select>
       <div id="about-me">
         <img id="me" src="images/20190828_151405-min.jpg" alt="Photo of me and my friend" />
         <div>
@@ -29,8 +38,7 @@
             everything you need to know about me, and will also showcase some 
             of my other projects. 
           </p>
-          
-          <button onclick="addRandomFact()">Random fact!</button>
+          <button onclick="addRandomFact()" class="text">Random fact!</button>
           <div id="fact-container" class="text"></div>
           
         </div>
@@ -190,17 +198,26 @@
         <div id="commentExtras">
           <div>
             <label for="numComments" class="text">Comments on display:</label>
-            <input type="number" id="numComments" name="numComments" value="5" onchange="displayComments()" min="1" max="10">
+            <input type="number" id="numComments" name="numComments" onchange="displayComments()" min="1" max="10">
           </div>
           <div>
             <label for="language" class="text">Language:</label>
-            <select name="language" id="language" onchange="displayComments()">
+            <select name="language" id="language" onchange="displayComments()" >
+              <option value="AR">العربية</option>
+              <option value="DE">Deutsch</option>
               <option value="EN" selected="selected">English</option>
-              <option value="ES">Spanish</option>
-              <option value="FR">French</option>
-              <option value="GA">Irish</option>
-              <option value="SV">Swedish</option>
-              <option value="ZH">Chinese</option>
+              <option value="ES">Español</option>
+              <option value="FR">Français</option>
+              <option value="GA">Gaeilge</option>
+              <option value="IT">Italiano</option>
+              <option value="JA">日本語</option>
+              <option value="KO">한국어</option>
+              <option value="SV">Svenska</option>
+              <option value="RO">Română</option>
+              <option value="RU">русский</option>
+              <option value="SW">Kiswahili</option>
+              <option value="UK">Українська</option>
+              <option value="ZH">中文</option> 
             </select>
           </div>
           <button id="delete" onclick="deleteComments()" class="text">Remove all comments</button>

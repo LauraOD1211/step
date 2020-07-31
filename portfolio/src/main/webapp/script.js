@@ -12,11 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random fact to the page.
- */
-function addRandomFact () {
-  const facts =
+const facts =
     ['I am from Donegal in Ireland',
       'I can speak English, Irish, French and a little Swedish',
       'I love archery, and I am a member of my college\'s archery club',
@@ -29,12 +25,18 @@ function addRandomFact () {
       'My name comes from Latin, and means "victory"'
     ];
 
+var transFacts = facts;
+
+/**
+ * Adds a random fact to the page.
+ */
+function addRandomFact () {
   // Pick a random fact.
-  const fact = facts[Math.floor(Math.random() * facts.length)];
+  const fact = transFacts[Math.floor(Math.random() * transFacts.length)];
 
   // Add it to the page.
   const factContainer = document.getElementById('fact-container');
-  factContainer.innerText = fact;
+  factContainer.innerHTML = fact;
 }
 
 /**
@@ -197,15 +199,20 @@ function translateAll () {
     location.reload();
   } else {
     var content = document.getElementsByClassName("text");
-    const textArray = Array.prototype.map.call(content, (el) => el.innerHTML);
-  
+    var textArray = Array.prototype.map.call(content, (el) => el.innerHTML);
+    facts.forEach(function (f) {textArray.push(f)});
     const params = new URLSearchParams();
     params.append('content', JSON.stringify(textArray));
     params.append('language', language);
 
     fetch('/translate', {method: 'POST', body: params}).then(response => response.json()).then((res) => {
-      for (var i = 0; i < content.length; i++) {
+      var i;
+      for (i = 0; i < content.length; i++) {
         content[i].innerHTML = res[i];
+      }
+      transFacts = [];
+      for (; i < res.length; i++) {
+        transFacts.push(res[i]);
       }
     });
   }
