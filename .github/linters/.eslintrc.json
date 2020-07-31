@@ -9,14 +9,14 @@
     "jest": true
   },
   "plugins": [
-    "‘@typescript-eslint’"
+    "@typescript-eslint"
   ],
   "globals": {
     "document": "readonly",
     "navigator": "readonly",
     "window": "readonly"
   },
-  "parser":"‘@typescript-eslint/parser’",
+  "parser":"@typescript-eslint/parser",
   "rules": {
     "array-bracket-newline": "off", 
     "array-bracket-spacing": ["error", "never"],
